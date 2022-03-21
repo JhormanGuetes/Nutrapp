@@ -47,10 +47,10 @@ exports.addPsychologicalHabit = async (req, res) => {
         }
         );
     });
-    Customer.updateOne({ _id }, { $set: { 'allergies': allergies } }, (err) => { if (error) error = err })
-    Customer.updateOne({ _id }, { $set: { 'supplements': supplements } }, (err) => { if (error) error = err })
-    Customer.updateOne({ _id }, { $set: { 'intolerances': intolerances } }, (err) => { if (error) error = err })
-
+    Customer.updateOne({_id}, { $set: { 'allergies': allergies}}, (err)=>{ if(error) error = err})
+    Customer.updateOne({_id}, { $set: { 'supplements': supplements}}, (err)=>{ if(error) error = err})
+    Customer.updateOne({_id}, { $set: { 'intolerances': intolerances}}, (err)=>{ if(error) error = err})
+    
     if (error) {
         return res.status(400).json({ ok: false, message: 'No se pudo ingresar los hábitos alimenticios.' });
     } else {
@@ -61,7 +61,7 @@ exports.addPsychologicalHabit = async (req, res) => {
 exports.addFeedingHabits = async (req, res) => {
     const { _id, feedingHabits } = req.body;
     let error;
-
+    
     feedingHabits.forEach(habit => {
         Customer.updateOne({
             _id
@@ -89,7 +89,7 @@ exports.listCustomer = async (req, res) => {
     try {
         const customer = await Customer.find({});
         res.status(200).json({ ok: true, message: "Se hizo la petición la manera correcta.", customer });
-
+        
     } catch (error) {
         res.status(400).json({ ok: false, error });
     }
@@ -105,33 +105,28 @@ exports.idCustomer = async (req, res) => {
     }
 }
 
-exports.background = async (req, res) => {
-    const { _id, personalHistory, familyBackground } = req.body;
+exports.background = async (req, res) =>{
+    const {_id, personalHistory, familyBackground} = req.body;
     let error;
 
-    Customer.updateOne({ _id }, { $set: { 'personalHistory': personalHistory } }, (err) => { if (error) error = err })
-    Customer.updateOne({ _id }, { $set: { 'familyBackground': familyBackground } }, (err) => { if (error) error = err })
+    Customer.updateOne({_id}, { $set: { 'personalHistory': personalHistory}}, (err)=>{ if(error) error = err})
+    Customer.updateOne({_id}, { $set: { 'familyBackground': familyBackground}}, (err)=>{ if(error) error = err})
+    
+    if(error){
+        res.status(400).json({ok: true, message: "No se pueden agregar los datos."});
+    }else{
 
-    if (error) {
-        res.status(400).json({ ok: true, message: "No se pueden agregar los datos." });
-    } else {
-
-        res.status(200).json({ ok: true, message: "Los datos fueron agregado con éxito." });
+        res.status(200).json({ok: true, message: "Los datos fueron agregado con éxito."});
     }
 }
 
-exports.listCustomerNutritionist = async (req, res) => {
+exports.listCustomerNutritionist = async (req, res)=>{
+    try {
+        const customer = await Customer.find({nutritionistId: req.body.nutritionistId});
 
-    const { _id } = req.body;
-    
-    await Customer.find({ nutritionistId: _id}, function (err, docs) {
-        if (err) {
-
-            res.status(400).json({ ok: true, message: "No se encontró al cliente" })
-        } else {
-
-            res.status(200).json({ ok: true, message: "Se encontró al cliente con éxito.", docs })
-        }
-    });
-
+        res.status(200).json({ok: true, message: "Se encontró al cliente con éxito.", customer})
+    } catch (error) {
+        res.status(400).json({ok: true, message: "No se encontró al cliente"})
+        
+    }
 }
