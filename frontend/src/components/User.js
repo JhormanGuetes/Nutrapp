@@ -6,7 +6,7 @@ import Profile from './Profile';
 import UserHome from './UserHome';
 
 function User() {
-    const [opcion, setOpcion] = useState();
+    //const [opcion, setOpcion] = useState();
 
     
 
