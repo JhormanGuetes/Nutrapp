@@ -47,9 +47,9 @@ exports.addPsychologicalHabit = async (req, res) => {
         }
         );
     });
-    Customer.updateOne({_id}, { $set: { 'allergies': allergies}}, (err)=>{ if(error) error = err})
-    Customer.updateOne({_id}, { $set: { 'supplements': supplements}}, (err)=>{ if(error) error = err})
-    Customer.updateOne({_id}, { $set: { 'intolerances': intolerances}}, (err)=>{ if(error) error = err})
+    Customer.updateOne({ _id }, { $set: { 'allergies': allergies } }, (err) => { if (error) error = err })
+    Customer.updateOne({ _id }, { $set: { 'supplements': supplements } }, (err) => { if (error) error = err })
+    Customer.updateOne({ _id }, { $set: { 'intolerances': intolerances } }, (err) => { if (error) error = err })
 
     if (error) {
         return res.status(400).json({ ok: false, message: 'No se pudo ingresar los hábitos alimenticios.' });
@@ -103,4 +103,35 @@ exports.idCustomer = async (req, res) => {
     } catch (error) {
         res.status(400).json({ ok: false, message: "No se pudo encontrar al cliente.", customer });
     }
+}
+
+exports.background = async (req, res) => {
+    const { _id, personalHistory, familyBackground } = req.body;
+    let error;
+
+    Customer.updateOne({ _id }, { $set: { 'personalHistory': personalHistory } }, (err) => { if (error) error = err })
+    Customer.updateOne({ _id }, { $set: { 'familyBackground': familyBackground } }, (err) => { if (error) error = err })
+
+    if (error) {
+        res.status(400).json({ ok: true, message: "No se pueden agregar los datos." });
+    } else {
+
+        res.status(200).json({ ok: true, message: "Los datos fueron agregado con éxito." });
+    }
+}
+
+exports.listCustomerNutritionist = async (req, res) => {
+
+    const { _id } = req.body;
+    
+    await Customer.find({ nutritionistId: _id}, function (err, docs) {
+        if (err) {
+
+            res.status(400).json({ ok: true, message: "No se encontró al cliente" })
+        } else {
+
+            res.status(200).json({ ok: true, message: "Se encontró al cliente con éxito.", docs })
+        }
+    });
+
 }
