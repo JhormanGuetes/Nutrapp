@@ -1,25 +1,32 @@
 import React, { useContext, useEffect } from "react";
 import styled from "styled-components";
 import { UserContext } from '../../context/UserContext';
-import { HomeRounded, GroupRounded, LoginOutlined } from '@mui/icons-material';
+import { HomeRounded, GroupRounded, LoginOutlined, PersonRemoveRounded } from '@mui/icons-material';
 import { grey } from "@mui/material/colors";
 import imgProfile from '../../images/imgPerfil.jpg';
 
 export default function Sidebar( { setOpcion} ) {
-    const { setUser } = useContext(UserContext);
+    const { setUser, client, setClient } = useContext(UserContext);
 
     useEffect(() => {
-        const optionSidebar = sessionStorage.getItem('optionSidebar') ? sessionStorage.getItem('optionSidebar') : 'userHome' ;
-        setOpcion(optionSidebar);
+        const option = localStorage.getItem('optionSidebar') ? localStorage.getItem('optionSidebar') : 'userHome' ;
+        setOpcion(option);
     }, []);
 
     const changeOption = (optionName) => {
-        sessionStorage.setItem('optionSidebar', optionName);
+        localStorage.setItem('optionSidebar', optionName);
         setOpcion(optionName);
+    }
+
+    const clearClient = () => {
+        sessionStorage.removeItem('idClient');
+        sessionStorage.removeItem('sexClient');
+        setClient(null);
     }
 
     const logout = () => {
         sessionStorage.clear();
+        localStorage.clear();
         setUser(null);
         window.location.href = './';
     }
@@ -37,6 +44,11 @@ export default function Sidebar( { setOpcion} ) {
                     <GroupRounded sx={{ color: grey[50], fontSize: 36 }} />
                 </ButtonSidebar>
             </Opcions>
+            { client && 
+                    <ButtonSidebar onClick={ clearClient }>
+                        <PersonRemoveRounded sx={{ color: grey[50], fontSize: 36 }} />
+                    </ButtonSidebar> 
+                }
             <LogoutButon>
                 <ButtonSidebar onClick={logout }>
                     <LoginOutlined sx={{ color: grey[50], fontSize: 36 }} />
@@ -67,7 +79,7 @@ const ButtonSidebar = styled.button`
     transition: background-color .5s;
 
     &:hover {
-        transform: scale(130%);
+        transform: scale(90%);
     }
 `;
 

@@ -18,7 +18,7 @@ export default function Clients() {
             const data = await res.json();
             setTotalClients(data.customer);
             setFilterClients(data.customer);
-            //console.log(data);
+            console.log(data.customer);
         }
         fetchData();
     }, [isNewClient]);
@@ -48,7 +48,10 @@ export default function Clients() {
                 <Grid container >
                     { filterClients.map( (data, idx) => {
                         return ( <Grid item xs={3} key={idx} >
-                            <ClientCard name={data.name} lastName={data.lastName} />
+                            <ClientCard id={data._id} 
+                                        name={data.name} 
+                                        lastName={data.lastName} 
+                                        sex={data.sex} />
                         </Grid> );
                     } ) }
                     

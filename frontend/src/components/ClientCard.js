@@ -1,12 +1,20 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { UserContext, addClientSessionStorage } from '../context/UserContext';
 import styled from 'styled-components';
 import { PersonRounded } from '@mui/icons-material';
 import { grey } from '@mui/material/colors';
 
-export default function ClientCard ({ name, lastName, sex }) {
+export default function ClientCard ({ id, name, lastName, sex }) {
+    const { setClient } = useContext(UserContext);
+
+    const addClient = () => {
+        addClientSessionStorage(id, sex);
+        setClient({id: id, sex: sex});
+    }
+
     return ( 
     <>
-        <Card>
+        <Card onClick={addClient}>
             <PersonRounded sx={{ fontSize: 150, color: grey[800] }} />
             <ContentName>
                 <Name>{name} {lastName}</Name>
@@ -24,6 +32,11 @@ const Card = styled.article`
     text-align: center;
     border-radius: 1em;
     background-color: #EEEEEE;
+    cursor: pointer;
+
+    &:hover{
+        transform: scale(104%);
+    }
 `;
 
 const ContentName = styled.div`

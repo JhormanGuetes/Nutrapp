@@ -2,7 +2,7 @@
 import React, { useState, useContext, useRef } from 'react';
 
 //components
-import { UserContext, addSessionStorage } from '../context/UserContext';
+import { UserContext, addUserSessionStorage } from '../context/UserContext';
 import { Modal, Container, Delete, Form, Tittle, GroupInput, Label, Input, ContainerSubmit, ErrorMessage } from './Modal';
 import { Submit } from './Submit';
 
@@ -45,7 +45,7 @@ export default function RegisterModal( props ) {
             const data = await res.json();
             
             if(data.ok){
-                addSessionStorage(name, email, data.user._id);
+                addUserSessionStorage(name, email, data.user._id);
                 setUser({id: data.user._id, name: name, email: email});
                 deleteInputsValues();
                 window.location.href = './user';

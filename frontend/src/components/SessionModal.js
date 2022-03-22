@@ -2,7 +2,7 @@
 import React, { useState, useContext, useRef } from 'react';
 
 //components
-import { UserContext, addSessionStorage } from '../context/UserContext';
+import { UserContext, addUserSessionStorage } from '../context/UserContext';
 import { Modal, Container, Delete, Form, Tittle, GroupInput, Label, Input, ContainerSubmit, ErrorMessage } from './Modal';
 import { Submit } from './Submit';
 
@@ -39,7 +39,7 @@ export default function SessionModal(props) {
       const res = await fetch('http://localhost:3001/api/v1/auth', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(usuario) });
       const data = await res.json();
       if (data.ok) {
-        addSessionStorage(data.user.name, email, data.user._id);
+        addUserSessionStorage(data.user.name, email, data.user._id);
         setUser({ id: data.user._id, name: data.user.name, email: email });
         deleteInputsValues();
         window.location.href = './user';

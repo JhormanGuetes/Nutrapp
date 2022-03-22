@@ -1,24 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import { UserContext } from '../context/UserContext';
 import styled from 'styled-components';
 import Sidebar from './sidebar/Sidebar';
 import Clients from './Clients';
 import Profile from './Profile';
 import UserHome from './UserHome';
+import Client from './Client';
 
 function User() {
-    //const [opcion, setOpcion] = useState();
-
+    const [opcionSidebar, setOpcionSidebar] = useState();
+    const { client } = useContext(UserContext);
     
-
     return ( 
         <>
             <Container>
-                <Sidebar setOpcion={setOpcion} />
+                <Sidebar setOpcion={setOpcionSidebar} />
                 <Content>
-                    {opcion === 'profile' && <Profile />}
-                    {opcion === 'userHome' && <UserHome />}
-                    {opcion === 'clients' && <Clients />}
-                    {opcion === 'client' && <Clients />}
+                    {(opcionSidebar === 'profile' && !client) && <Profile />}
+                    {(opcionSidebar === 'userHome' && !client) && <UserHome />}
+                    {(opcionSidebar === 'clients' && !client) && <Clients />}
+                    {client && <Client />}
                 </Content>
             </Container>
             

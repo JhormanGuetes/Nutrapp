@@ -94,7 +94,25 @@ export const Input = styled.input`
     width: 16em;
     font-size: 1.3em;
   }
-  
+`;
+
+export const Select = styled.select`
+  border: 2px solid #C9ADA7;
+  box-sizing: border-box;
+  box-shadow: 4px 6px 4px rgba(0, 0, 0, 0.25);
+  border-radius: .16cm;
+  padding-left: .5em;
+
+  @media screen and ( min-width: 1024px) {
+    height: 2.2em;
+    width: 14em;
+    font-size: 1.1em;
+  }
+  @media screen and (min-width: 1400px) {
+    height: 2.6em;
+    width: 16em;
+    font-size: 1.3em;
+  }
 `;
 
 export const ContainerSubmit = styled.div`
