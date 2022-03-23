@@ -27,15 +27,16 @@ const customerSchema = new Schema({
     familyBackground: {type: String, trim: true},
     psychologicalHabit: [
         {
-            idHabit: {type: String, trim: true},
+            idHabit: {type: String, trim: true, required: true},
             typeTimes: {type: String, trim: true, default: "dia"},
             times: {type: Number},
+            color: {type: String, trim: true},
             descriptionHabit: {type: String, trim: true}
         }
     ],
     feedingHabits: [
         {
-            idHabit: {type: String, trim: true},
+            idHabit: {type: String, trim: true, required: true},
             typeTimes: {type: String, trim: true, default: "sem"},
             times: {type: Number},
             descriptionHabit: {type: String, trim: true}

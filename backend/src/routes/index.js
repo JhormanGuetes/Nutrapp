@@ -2,6 +2,8 @@ const express = require('express');
 const customerController = require('../controllers/customer.controller');
 const userController = require('../controllers/user.controller');
 const collectionController = require('../controllers/collection.controller.js');
+const labController = require('../controllers/lab.controller.js');
+const psychoController = require("../controllers/psycho.controller.js")
 
 const router = express.Router();
 
@@ -19,6 +21,11 @@ module.exports = () => {
     router.get('/api/v1/id-customer', customerController.idCustomer);
     
     router.get('/api/v1/list-collection', collectionController.list);
+    
+    router.get('/api/v1/list-labs', labController.list);
+
+    router.get('/api/v1/list-psycho', psychoController.list);
+    router.get('/api/v1/id-psycho', psychoController.listID);
 
 
     

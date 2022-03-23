@@ -1,4 +1,6 @@
-const Customer = require('../models/customer.model.js')
+const Customer = require('../models/customer.model.js');
+const Psychobiological = require("../models/psycho.model.js");
+const Lab = require('../models/lab.model.js');
 const express = require('express');
 const { default: mongoose } = require('mongoose');
 
@@ -26,30 +28,30 @@ exports.addPsychologicalHabit = async (req, res) => {
     const { _id, psychologicalHabit, allergies, supplements, intolerances } = req.body;
     let error;
 
-    psychologicalHabit.forEach(habit => {
-        console.log(habit.idHabit);
-        Customer.updateOne(
-            {
-                _id
-            }, {
-            $push: {
-                "psychologicalHabit": {
-                    idHabit: habit.idHabit,
-                    typeTimes: habit.typeTimes,
-                    times: habit.times,
-                    descriptionHabit: habit.descriptionHabit
+    psychologicalHabit.forEach(async (habit) => {  
+        const psycho = await Psychobiological.findById({_id: habit.idHabit});
+        if(psycho){
+            Customer.updateOne(
+                {
+                    _id
+                }, {
+                $push: {
+                    "psychologicalHabit": {
+                        idHabit: habit.idHabit,
+                        typeTimes: habit.typeTimes,
+                        times: habit.times,
+                        color: habit.color,
+                        descriptionHabit: habit.descriptionHabit
+                    }
+                }
+            }, (err) => {
+                if (err) {
+                    error = err;
                 }
             }
-        }, (err) => {
-            if (err) {
-                error = err;
-            }
+            );
         }
-        );
     });
-    Customer.updateOne({_id}, { $set: { 'allergies': allergies}}, (err)=>{ if(error) error = err})
-    Customer.updateOne({_id}, { $set: { 'supplements': supplements}}, (err)=>{ if(error) error = err})
-    Customer.updateOne({_id}, { $set: { 'intolerances': intolerances}}, (err)=>{ if(error) error = err})
     
     if (error) {
         return res.status(400).json({ ok: false, message: 'No se pudo ingresar los hábitos alimenticios.' });
