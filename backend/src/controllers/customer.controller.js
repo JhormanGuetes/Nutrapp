@@ -40,7 +40,6 @@ exports.addPsychologicalHabit = async (req, res) => {
                         idHabit: habit.idHabit,
                         typeTimes: habit.typeTimes,
                         times: habit.times,
-                        color: habit.color,
                         descriptionHabit: habit.descriptionHabit
                     }
                 }
@@ -99,11 +98,10 @@ exports.listCustomer = async (req, res) => {
 
 exports.idCustomer = async (req, res) => {
     try {
-        const { _id } = req.body;
-        const customer = await Customer.findById({ _id });
+        const customer = await Customer.findById({ _id: req.params.id});
         res.status(200).json({ ok: true, message: "El cliente fue encontra exitosamente.", customer });
     } catch (error) {
-        res.status(400).json({ ok: false, message: "No se pudo encontrar al cliente.", customer });
+        res.status(400).json({ ok: false, message: "No se pudo encontrar al cliente."});
     }
 }
 
