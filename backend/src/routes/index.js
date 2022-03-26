@@ -3,7 +3,8 @@ const customerController = require('../controllers/customer.controller');
 const userController = require('../controllers/user.controller');
 const collectionController = require('../controllers/collection.controller.js');
 const labController = require('../controllers/lab.controller.js');
-const psychoController = require("../controllers/psycho.controller.js")
+const psychoController = require("../controllers/psycho.controller.js");
+const customerMiddleware = require('../middleware/customer.middleware');
 
 const router = express.Router();
 
@@ -18,6 +19,10 @@ module.exports = () => {
     router.put('/api/v1/background', customerController.background);
     router.get('/api/v1/list-customer', customerController.listCustomer);
     router.post('/api/v1/list-customer-nutritionist', customerController.listCustomerNutritionist);
+    router.post(
+        '/api/v1/formulas',
+        customerMiddleware.pesoIdealHamwi,
+        customerController.formulas);
     router.get('/api/v1/id-customer/:id', customerController.idCustomer);
     
     router.get('/api/v1/list-collection', collectionController.list);

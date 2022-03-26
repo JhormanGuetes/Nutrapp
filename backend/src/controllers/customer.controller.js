@@ -126,7 +126,11 @@ exports.listCustomerNutritionist = async (req, res)=>{
 
         res.status(200).json({ok: true, message: "Se encontró al cliente con éxito.", customer})
     } catch (error) {
-        res.status(400).json({ok: true, message: "No se encontró al cliente"})
-        
+        res.status(400).json({ok: true, message: "No se encontró al cliente"});
     }
+}
+
+exports.formulas = async (req, res)=>{
+    console.log(req.locals)
+    res.status(200).json({ok: true})
 }
