@@ -50,6 +50,9 @@ exports.addPsychologicalHabit = async (req, res) => {
             }
             );
         }
+        Customer.updateOne({_id}, { $set: { 'allergies': allergies}}, (err)=>{ if(error) error = err})
+        Customer.updateOne({_id}, { $set: { 'supplements': supplements}}, (err)=>{ if(error) error = err})
+        Customer.updateOne({_id}, { $set: { 'intolerances': intolerances}}, (err)=>{ if(error) error = err})
     });
     
     if (error) {

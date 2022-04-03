@@ -29,9 +29,9 @@ const customerSchema = new Schema({
         {
             idHabit: {type: String, trim: true, required: true},
             typeTimes: {type: String, trim: true, default: "dia"},
-            times: {type: Number},
+            times: {type: Number, default: 0},
             color: {type: String, trim: true},
-            descriptionHabit: {type: String, trim: true}
+            descriptionHabit: {type: String, trim: true, default: ""}
         }
     ],
     feedingHabits: [
@@ -45,7 +45,10 @@ const customerSchema = new Schema({
     allergies: {type: String, trim: true},
     supplements: {type: String, trim: true},
     intolerances: {type: String, trim: true},
-    generalDescription: {type: String, trim: true}
+    generalDescription: {type: String, trim: true}, 
+    pesoIdealHamwi: {type: Number},
+    pesoIdealBrocca: {type: Number},
+    contexturaGrant: {type: String, trim: true}
 })
 
 module.exports = mongoose.model('Customer', customerSchema);
