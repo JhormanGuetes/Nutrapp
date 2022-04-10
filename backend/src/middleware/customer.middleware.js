@@ -101,7 +101,7 @@ const pesoIdealBocca = async (req, res, next) => {
         
     }
 }
-const clinicaMayoWest = async (req, res, next)=>{
+const pesoIdealClinicaMayoWest = async (req, res, next)=>{
     try {
         const { tallaCM, circunferenciaMunieca, idCustomer } = req.body;
         const customer = await Customer.findById({ _id: idCustomer });
@@ -111,11 +111,16 @@ const clinicaMayoWest = async (req, res, next)=>{
         }else{
             const pesoIdealClinicaMayoWestMT = 20.6 * (tallaCM/100)*2;
         }
+        next();
     } catch (error) {
         
     }
 }
+const pesoIdealIMC = async (req, res, next)=>{
+    
+}
 module.exports = {
     pesoIdealHamwi,
-    pesoIdealBocca
+    pesoIdealBocca,
+    pesoIdealClinicaMayoWest
 }

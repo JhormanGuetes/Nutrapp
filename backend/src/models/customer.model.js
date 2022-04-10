@@ -37,6 +37,7 @@ const customerSchema = new Schema({
     feedingHabits: [
         {
             idHabit: {type: String, trim: true, required: true},
+            name: {type: String, trim: true, required: true}, 
             typeTimes: {type: String, trim: true, default: "sem"},
             times: {type: Number},
             descriptionHabit: {type: String, trim: true}

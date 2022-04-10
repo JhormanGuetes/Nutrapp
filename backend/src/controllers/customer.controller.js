@@ -73,6 +73,7 @@ exports.addFeedingHabits = async (req, res) => {
             $push: {
                 'feedingHabits': {
                     idHabit: habit.idHabit,
+                    name: habit.name,
                     typeTimes: habit.typeTimes,
                     times: habit.times,
                     descriptionHabit: habit.descriptionHabit
