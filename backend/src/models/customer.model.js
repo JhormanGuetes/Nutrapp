@@ -43,6 +43,14 @@ const customerSchema = new Schema({
             descriptionHabit: {type: String, trim: true}
         }
     ],
+    labs: [
+        {
+            idLab: {type: String, trim: true, required: true},
+            name: {type: String, trim: true},
+            value: {type: Number},
+            unit: {type: String, trim: true}
+        }
+    ],
     allergies: {type: String, trim: true},
     supplements: {type: String, trim: true},
     intolerances: {type: String, trim: true},

@@ -89,7 +89,32 @@ exports.addFeedingHabits = async (req, res) => {
         res.status(201).json({ ok: true, message: "Se agregó correctamente las hábitos alimenticios." });
     }
 }
-
+exports.addLab = async (req, res) => {
+    const { _id, labs } = req.body;
+    let error;
+    
+    labs.forEach(lab => {
+        Customer.updateOne({
+            _id
+        }, {
+            $push: {
+                'labs': {
+                    idLab: lab.idLab,
+                    name: lab.name,
+                    value: lab.value,
+                    unit: lab.unit
+                }
+            }
+        }, (err) => {
+            if (err) error = err;
+        })
+    });
+    if (error) {
+        return res.status(400).json({ ok: false, message: 'No se pudo ingresar los hábitos alimenticios.' });
+    } else {
+        res.status(201).json({ ok: true, message: "Se agregó correctamente las hábitos alimenticios." });
+    }
+}
 exports.listCustomer = async (req, res) => {
     try {
         const customer = await Customer.find({});

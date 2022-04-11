@@ -14,6 +14,7 @@ module.exports = () => {
     router.get('/api/v1/list', userController.list); //Listar todos los nutricionistas
 
     router.post('/api/v1/add-customer', customerController.addCustomer);
+    router.post('/api/v1/add-lab', customerController.addLab);
     router.put('/api/v1/add-psychological-habit', customerController.addPsychologicalHabit);
     router.put('/api/v1/add-feeding-habits', customerController.addFeedingHabits);
     router.put('/api/v1/background', customerController.background);
