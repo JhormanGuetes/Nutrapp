@@ -53,6 +53,14 @@ export const Tittle = styled.p`
 export const Form = styled.form`
   padding-bottom: 1.1em;
 `;
+export const ContainerForm = styled.div`
+  display: flex;
+`;
+
+export const ContentForm = styled.div`
+  width: 50%;
+  height: 100%;
+`;
 
 export const GroupInput = styled.div`
   @media screen and ( min-width: 1024px) {
