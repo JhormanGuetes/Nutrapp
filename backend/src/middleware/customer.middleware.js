@@ -9,12 +9,13 @@ const elegirPesoIdeal = async (req, res, next) => {
       pesoActualKG,
       pesoACalcular,
     } = req.body;
+
     Customer.updateOne(
       { _id },
       {
         $set: {
-          "tallaCentrimetros": tallaCM,
-          "circunferenciaDeMuniecaCentrimetros": circunferenciaDeMuniecaCM,
+          tallaCentrimetros: tallaCM,
+          circunferenciaDeMuniecaCentrimetros: circunferenciaDeMuniecaCM,
         },
       },
       (err) => {
@@ -24,10 +25,10 @@ const elegirPesoIdeal = async (req, res, next) => {
     if (pesoACalcular === "Hamwi/Brocca") {
       //console.log(typeof tallaCM)
       if (tallaCM >= 152) {
-        pesoIdealHamwi(req, res);
+        pesoIdealHamwi(_id, tallaCM, circunferenciaDeMuniecaCM);
       } else if (tallaCM < 152 && tallaCM >= 0) {
         console.log("Entro");
-        exito = await pesoIdealBocca(tallaCM, circunferenciaDeMuniecaCM, _id);
+        exito = await pesoIdealBocca(_id, tallaCM, circunferenciaDeMuniecaCM);
         console.log(exito, "pto");
         res
           .status(200)
@@ -48,65 +49,65 @@ const elegirPesoIdeal = async (req, res, next) => {
       .json({ ok: false, message: "No se puede agregar las variables" });
   }
 };
-const pesoIdealHamwi = async (req, res) => {
+const pesoIdealHamwi = async (_id, tallaCM, circunferenciaDeMuniecaCM) => {
+  let error, pesoIdealHamwi, contexturaGrantValor;
   try {
-    const {
-      idCustomer,
-      tallaCM,
-      circunferenciaDeMuniecaCM,
-      pesoActualKG,
-      pesoACalcular,
-    } = req.body;
     if (typeof tallaCM === "number") {
       //console.log(idCustomer);
-      const customer = await Customer.findById({ _id: idCustomer });
-      //console.log(customer);
+      const customer = await Customer.findById({ _id });
+      console.log(customer);
 
       if (customer.sex === "M") {
-        // PESO IDEAL O TEÓRICO: 1. Hamwi
-        let pesoIdealHamwiHombres = (tallaCM - 152) * 1.08 + 48.5;
-        req.locals = { pesoIdealHamwiHombres };
+        pesoIdealHamwi = (tallaCM - 152) * 1.08 + 48.5;
 
-        let contexturaGrant = tallaCM / circunferenciaDeMuniecaCM;
+        contexturaGrantValor = tallaCM / circunferenciaDeMuniecaCM;
 
-        if (contexturaGrant > 10.4) {
-          let contexturaPequenia = "Contextura Pequeña";
-          req.locals = { contexturaPequenia };
-        } else if (contexturaGrant > 9.6 && contexturaGrant <= 10.4) {
-          let contexturaMediana = "Contextura Mediana";
+        if (contexturaGrantValor > 10.4) {
+          contexturaGrantTipo = "Contextura Pequeña";
+        } else if (contexturaGrantValor > 9.6 && contexturaGrantValor <= 10.4) {
+          contexturaGrantTipo = "Contextura Mediana";
           req.locals = { contexturaMediana };
-        } else if (contexturaGrant <= 9.6) {
-          let contexturaGrande = "Contextura Grande";
-          req.locals = { contexturaGrande };
+        } else if (contexturaGrantValor <= 9.6) {
+          contexturaGrantTipo = "Contextura Grande";
         }
         // PESO IDEAL O TEÓRICO: 2. Bocca
       } else {
-        let pesoIdealHamwiMujeres = (tallaCM - 152) * 0.88 + 48.5;
-        req.locals = { pesoIdealHamwiMujeres };
+        pesoIdealHamwi = (tallaCM - 152) * 0.88 + 48.5;
 
-        let contexturaGrant = tallaCM / circunferenciaMunieca;
+        contexturaGrantValor = tallaCM / circunferenciaMunieca;
 
-        if (contexturaGrant > 11) {
-          let contexturaPequenia = "Contextura Pequeña";
-          req.locals = { contexturaPequenia };
-        } else if (contexturaGrant > 10.4 && contexturaGrant <= 11) {
-          let contexturaMediana = "Contextura Mediana";
-          req.locals = { contexturaMediana };
-        } else if (contexturaGrant <= 10.11) {
-          let contexturaGrande = "Contextura Grande";
-          req.locals = { contexturaGrande };
+        if (contexturaGrantValor > 11) {
+          let contexturaGrantTipo = "Contextura Pequeña";
+        } else if (contexturaGrantValor > 10.4 && contexturaGrantValor <= 11) {
+          contexturaGrantTipo = "Contextura Mediana";
+        } else if (contexturaGrantValor <= 10.11) {
+          contexturaGrantTipo = "Contextura Grande";
         }
       }
+
+      //Actualizando los datos del cliente
+      Customer.updateOne(
+        { _id },
+        {
+          $set: {
+            pesoIdealHamwi: pesoIdealHamwi,
+            contexturaGrantValor: contexturaGrantValor,
+            contexturaGrantTipo: contexturaGrantTipo,
+          },
+        },
+        (err) => {
+          if (error) error = err;
+        }
+      );
+      return true;
     } else {
-      return res
-        .status(400)
-        .json({ ok: false, message: "Verifique los datos ingresados." });
+      return false;
     }
   } catch (error) {
-    next(new Error("No se pude agregar"));
+    return false;
   }
 };
-const pesoIdealBocca = async (tallaCM, circunferenciaMunieca, _id) => {
+const pesoIdealBocca = async (_id, tallaCM, circunferenciaMunieca) => {
   let error, contexturaGrantTipo;
   try {
     const customer = await Customer.findById({ _id });
@@ -133,9 +134,9 @@ const pesoIdealBocca = async (tallaCM, circunferenciaMunieca, _id) => {
         { _id },
         {
           $set: {
-            "pesoIdealBrocca": pesoIdealBroccaHombres,
-            "contexturaGrantValor": contexturaGrantValor,
-            "contexturaGrantTipo": contexturaGrantTipo,
+            pesoIdealBrocca: pesoIdealBroccaHombres,
+            contexturaGrantValor: contexturaGrantValor,
+            contexturaGrantTipo: contexturaGrantTipo,
           },
         },
         (err) => {

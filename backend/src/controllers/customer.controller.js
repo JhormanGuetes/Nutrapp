@@ -160,6 +160,5 @@ exports.listCustomerNutritionist = async (req, res)=>{
 }
 
 exports.formulas = async (req, res)=>{
-    console.log(req.locals)
-    res.status(200).json({ok: true})
+    res.status(200).json({ok: true, message: "Se agregó correctamente"})
 }
