@@ -54,10 +54,26 @@ const customerSchema = new Schema({
     allergies: {type: String, trim: true},
     supplements: {type: String, trim: true},
     intolerances: {type: String, trim: true},
-    generalDescription: {type: String, trim: true}, 
-    pesoIdealHamwi: {type: Number},
-    pesoIdealBrocca: {type: Number},
-    contexturaGrant: {type: String, trim: true}
+    generalDescription: {type: String, trim: true},
+
+    //Variables para las fórmulas
+    tallaCentrimetros: {type: Number},
+    circunferenciaDeMuniecaCentrimetros: {type: Number},
+    pesoActualKilogramos: {type: Number},
+    pesoUsualKilogramos: {type: Number},
+    contexturaGrantValor: {type: Number},
+    contexturaGrantTipo: {type: String, trim: true},
+    tipoDePeso: {type: String, trim: true},
+
+    
+    //Tipos de peso ideales
+    pesoIdealHamwi: {type: Number, default: -1},
+    pesoIdealBrocca: {type: Number, default: -1},
+    pesoIdealClinicaMayoWest: {type: Number, default: -1},
+    pesoIdealIMC: {type: Number, default: -1},
+    pesoIdealAjustado: {type: Number, default: -1},
+
+    //Contextura de Grant
 })
 
 module.exports = mongoose.model('Customer', customerSchema);

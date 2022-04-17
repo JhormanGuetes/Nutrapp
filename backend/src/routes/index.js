@@ -22,8 +22,7 @@ module.exports = () => {
     router.post('/api/v1/list-customer-nutritionist', customerController.listCustomerNutritionist);
     router.post(
         '/api/v1/formulas',
-        customerMiddleware.pesoIdealHamwi,
-        customerController.formulas);
+        customerMiddleware.elegirPesoIdeal);
     router.get('/api/v1/id-customer/:id', customerController.idCustomer);
     
     router.get('/api/v1/list-collection', collectionController.list);
