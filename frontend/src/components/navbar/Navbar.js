@@ -1,8 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import styled, { css } from 'styled-components';
-import { AccountCircleOutlined, StraightenRounded, BiotechRounded, BallotOutlined, Style } from '@mui/icons-material';
+import { AccountCircleOutlined, StraightenRounded, BiotechRounded, BallotOutlined } from '@mui/icons-material';
 import { grey } from '@mui/material/colors';
-import { height } from '@mui/system';
 
 export default function Navbar({ setOptionNav }) {
     const nav = useRef();
@@ -20,7 +19,7 @@ export default function Navbar({ setOptionNav }) {
     const scrollNavbar = (dir) => {
         nav.current.scrollBy({
             top: 0,
-            left: (dir == 'left') ? -400 : 400 ,
+            left: (dir === 'left') ? -400 : 400 ,
             behavior: 'smooth'
         });
     }
@@ -62,6 +61,7 @@ const Container = styled.div`
     padding: 5px;
     display: flex;
     font-family: 'Asul', sans-serif;
+    position: sticky;
 `;
 
 const Items = styled.div`

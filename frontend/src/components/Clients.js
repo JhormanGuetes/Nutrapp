@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { AddRounded } from '@mui/icons-material';
-import { Autocomplete, Container, Grid, TextField } from "@mui/material";
+import { Container, Grid } from "@mui/material";
 import NewClientModal from "./NewClientModal";
 import ClientCard from "./ClientCard";
 
@@ -18,7 +18,6 @@ export default function Clients() {
             const data = await res.json();
             setTotalClients(data.customer);
             setFilterClients(data.customer);
-            console.log(data.customer);
         }
         fetchData();
     }, [isNewClient]);
@@ -54,7 +53,6 @@ export default function Clients() {
                                         sex={data.sex} />
                         </Grid> );
                     } ) }
-                    
                 </Grid>
             </ContentClients>
         </ContainerClients>
