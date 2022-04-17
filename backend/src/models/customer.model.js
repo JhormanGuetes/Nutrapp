@@ -69,7 +69,7 @@ const customerSchema = new Schema({
     //Tipos de peso ideales
     pesoIdealHamwi: {type: Number, default: -1},
     pesoIdealBrocca: {type: Number, default: -1},
-    pesoIdealClinicaMayoWest: {type: Number, default: -1},
+    pesoIdealClinicaMayoWestMetros: {type: Number, default: -1},
     pesoIdealIMC: {type: Number, default: -1},
     pesoIdealAjustado: {type: Number, default: -1},
 
