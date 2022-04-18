@@ -325,6 +325,18 @@ exports.formulas = async (req, res) => {
 				message: 'Verifique los datos para ingresar el IMC correctamente.',
 			});
 	} else if (pesoACalcular === 'Peso Ajustado') {
+		exito = await formulas.pesoIdealAjustado(_id, pesoActualKG);
+		if (exito)
+			return res.status(200).json({
+				ok: true,
+				message: 'Se agrego correctamente peso ideal ajustado.',
+			});
+		else
+			return res.status(400).json({
+				ok: true,
+				message:
+					'Verifique los datos para ingresar el peso ideal ajustado correctamente.',
+			});
 	}
 	next();
 };

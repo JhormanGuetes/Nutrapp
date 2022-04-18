@@ -161,9 +161,34 @@ const pesoIdealIMC = async (_id, tallaCM, tipoDePeso) => {
 	);
 	return true;
 };
+const pesoIdealAjustado = async (_id, pesoActualKG) => {
+	let pesoActualKilogramos;
+	const customer = await Customer.findById({ _id });
+
+	if (typeof pesoActualKG === 'number' && customer.pesoIdealIMCMetros !== -1) {
+		pesoActualKilogramos =
+			(pesoActualKG - customer.pesoIdealIMCMetros) * 0.25 +
+			customer.pesoIdealIMCMetros;
+	} else {
+		return false;
+	}
+	Customer.updateOne(
+		{ _id },
+		{
+			$set: {
+				pesoIdealAjustado: pesoActualKilogramos,
+			},
+		},
+		(err) => {
+			if (err) return false;
+		}
+	);
+	return true;
+};
 module.exports = {
 	pesoIdealHamwi,
 	pesoIdealBrocca,
 	pesoIdealIMC,
 	pesoIdealClinicaMayoWest,
+	pesoIdealAjustado,
 };
