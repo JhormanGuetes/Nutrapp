@@ -66,15 +66,10 @@ const pesoIdealBrocca = async (_id, tallaCM, circunferenciaMunieca) => {
 	const customer = await Customer.findById({ _id });
 	//console.log(customer, 'sal');
 
-	const pesoIdeal = tallaCM - 100;
+	pesoIdealBrocca = tallaCM - 100;
+	contexturaGrantValor = tallaCM / circunferenciaMunieca;
+
 	if (customer.sex === 'M') {
-		console.log('Sex masculino');
-		// PESO IDEAL O TEÓRICO: 1. Hamwi
-		pesoIdealBrocca = (tallaCM - 152) * 1.08 + 48.5;
-
-		//console.log(customer);
-		contexturaGrantValor = tallaCM / circunferenciaMunieca;
-
 		if (contexturaGrantValor > 5.4) {
 			contexturaGrantTipo = 'Contextura Pequeña';
 		} else if (contexturaGrantValor > 9.6 && contexturaGrantValor <= 10.4) {
@@ -83,10 +78,6 @@ const pesoIdealBrocca = async (_id, tallaCM, circunferenciaMunieca) => {
 			contexturaGrantTipo = 'Contextura Grande';
 		}
 	} else {
-		pesoIdealBrocca = (tallaCM - 152) * 1.08 + 48.5;
-
-		contexturaGrantValor = tallaCM / circunferenciaMunieca;
-
 		if (contexturaGrantValor > 6) {
 			contexturaGrantTipo = 'Contextura Pequeña';
 		} else if (contexturaGrantValor > 10.4 && contexturaGrantValor <= 11) {
@@ -146,18 +137,29 @@ const pesoIdealClinicaMayoWest = async (_id, tallaCM) => {
 		return false;
 	}
 };
-const pesoIdealIMC = async (req, res, next) => {
-	try {
-		const { tallaCM, circunferenciaMunieca, idCustomer } = req.body;
-		const customer = await Customer.findById({ _id: idCustomer });
+const pesoIdealIMC = async (_id, tallaCM, tipoDePeso) => {
+	let pesoIdealIMCMetros;
+	const customer = await Customer.findById({ _id });
 
-		if (customer.sex == 'M') {
-			const pesoIdealClinicaMayoWestMT = 22.1 * (tallaCM / 100) * 2;
-		} else {
-			const pesoIdealClinicaMayoWestMT = 20.6 * (tallaCM / 100) * 2;
+	if (tipoDePeso === 'Bajo Peso') {
+		pesoIdealIMCMetros = 18.5 * (tallaCM / 100) * 2;
+	} else if (tipoDePeso === 'Sobrepeso u Obesidad') {
+		pesoIdealIMCMetros = 24.9 * (tallaCM / 100) * 2;
+	} else if (tipoDePeso === 'Peso Promedio') {
+		pesoIdealIMCMetros = 21.7 * (tallaCM / 100) * 2;
+	} else {
+		return false;
+	}
+	Customer.updateOne(
+		{ _id },
+		{
+			$set: { pesoIdealIMCMetros: pesoIdealIMCMetros },
+		},
+		(err) => {
+			if (err) return false;
 		}
-		next();
-	} catch (error) {}
+	);
+	return true;
 };
 module.exports = {
 	pesoIdealHamwi,

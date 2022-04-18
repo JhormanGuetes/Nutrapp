@@ -236,13 +236,13 @@ exports.listCustomerNutritionist = async (req, res) => {
 };
 
 exports.formulas = async (req, res) => {
-	let error;
 	const {
 		_id,
 		tallaCM,
 		circunferenciaDeMuniecaCM,
 		pesoActualKG,
 		pesoACalcular,
+		tipoDePeso,
 	} = req.body;
 
 	Customer.updateOne(
@@ -268,10 +268,15 @@ exports.formulas = async (req, res) => {
 				tallaCM,
 				circunferenciaDeMuniecaCM
 			);
-			return res.status(200).json({
-				ok: true,
-				message: 'Se agrego correctamente peso ideal Hamwi.',
-			});
+			if (exito)
+				return res.status(200).json({
+					ok: true,
+					message: 'Se agrego correctamente peso ideal Hamwi.',
+				});
+			else
+				return res
+					.status(400)
+					.json({ ok: false, message: 'Ingrese los correctamente Hamwi.' });
 		} else if (tallaCM < 152 && tallaCM >= 0) {
 			console.log('Entro');
 			exito = await formulas.pesoIdealBrocca(
@@ -279,23 +284,46 @@ exports.formulas = async (req, res) => {
 				tallaCM,
 				circunferenciaDeMuniecaCM
 			);
-			return res.status(200).json({
-				ok: true,
-				message: 'Se agrego correctamente peso ideal Brocca.',
-			});
+			if (exito)
+				return res.status(200).json({
+					ok: true,
+					message: 'Se agrego correctamente peso ideal Brocca.',
+				});
+			else
+				return res.status(400).json({
+					ok: true,
+					message: 'Verifique los datos para ingresar el Brocca correctamente.',
+				});
 		} else {
 			return res
 				.status(400)
-				.json({ ok: false, message: 'Ingrese los correctamente.' });
+				.json({ ok: false, message: 'Ingrese los correctamente de Brocca.' });
 		}
 	} else if (pesoACalcular === 'Clínica Mayo; West') {
-		console.log('entro');
 		exito = await formulas.pesoIdealClinicaMayoWest(_id, tallaCM);
-		return res.status(200).json({
-			ok: false,
-			message: 'Se agrego correctamente peso ideal Clínica Mayo; West.',
-		});
+		if (exito)
+			return res.status(200).json({
+				ok: false,
+				message: 'Se agrego correctamente peso ideal Clínica Mayo; West.',
+			});
+		else
+			return res.status(400).json({
+				ok: true,
+				message:
+					'Verifique los datos para ingresar el Clinica Mayo; West correctamente.',
+			});
 	} else if (pesoACalcular === 'IMC') {
+		exito = await formulas.pesoIdealIMC(_id, tallaCM, tipoDePeso);
+		if (exito)
+			return res.status(200).json({
+				ok: true,
+				message: 'Se agrego correctamente peso ideal por IMC.',
+			});
+		else
+			return res.status(400).json({
+				ok: true,
+				message: 'Verifique los datos para ingresar el IMC correctamente.',
+			});
 	} else if (pesoACalcular === 'Peso Ajustado') {
 	}
 	next();
