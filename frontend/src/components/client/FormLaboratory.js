@@ -19,6 +19,7 @@ import { BoxForm,
         const [disabledForm, setDisabledForm] = useState(false);
         const [disabledButton, setDisabledButton] = useState(false);
         const [alertMsg, setAlertMsg] = useState({color:'danger', msg:''});
+        let infoInputValue = [];
     
         const itemForm = (item, index) => {
             return (
@@ -41,9 +42,20 @@ import { BoxForm,
                         {...register(`labs.${index}.unit`)}
                         type='text' 
                         disabledForm={disabledForm} 
-                    />                
+                    />      
+                    
                 </BoxInput>
             );
+        }
+
+        const colorChange = (value, item, id) => {
+            if (value !== null) {
+                //getSex( value, item, id );
+                console.log(value);
+                console.log(item);
+                console.log(id);
+                console.log(document.getElementById('itemLab' + 1)); 
+            }
         }
     
         const { fields, append } = useFieldArray({
@@ -75,6 +87,16 @@ import { BoxForm,
                 } 
             }
         }, [labsArray, client]);
+
+        useEffect(() => {
+            if (fields.length === 37) {
+                //console.log(fields.length);
+                //
+                fields.map( (item, index) => {
+                    getSex(item.value, (labsArray.find((e) => e._id === item.idLab )) , ('itemLab' + index))
+                } )
+            }
+        }, [fields]);
     
         const alert = (msg, color) =>{
             setAlertMsg({color:color, msg:msg});
@@ -109,6 +131,7 @@ import { BoxForm,
         }
     
         const onSubmit = async (data) => {
+            console.log(data);
             setDisabledButton(true);
             data._id = sessionStorage.getItem('idClient');
             const res = await fetch( 'http://localhost:3001/api/v1/add-lab', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data)} );
